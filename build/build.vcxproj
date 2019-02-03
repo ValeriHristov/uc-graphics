@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="packages\uc-core.1.0.12\build\native\uc-core.props" Condition="Exists('packages\uc-core.1.0.12\build\native\uc-core.props')" />
+  <Import Project="packages\uc-core.1.0.13\build\native\uc-core.props" Condition="Exists('packages\uc-core.1.0.13\build\native\uc-core.props')" />
   <Import Project="packages\uc-serialization-engine.1.0.2\build\native\uc-serialization-engine.props" Condition="Exists('packages\uc-serialization-engine.1.0.2\build\native\uc-serialization-engine.props')" />
   <Import Project="packages\uc-imaging.1.0.12\build\native\uc-imaging.props" Condition="Exists('packages\uc-imaging.1.0.12\build\native\uc-imaging.props')" />
   <Import Project="packages\uc-math.1.0.4\build\native\uc-math.props" Condition="Exists('packages\uc-math.1.0.4\build\native\uc-math.props')" />
@@ -71,7 +71,6 @@
     <Import Project="packages\uc-serialization-engine.1.0.2\build\native\uc-serialization-engine.targets" Condition="Exists('packages\uc-serialization-engine.1.0.2\build\native\uc-serialization-engine.targets')" />
     <Import Project="packages\WinPixEventRuntime.1.0.181206001\build\WinPixEventRuntime.targets" Condition="Exists('packages\WinPixEventRuntime.1.0.181206001\build\WinPixEventRuntime.targets')" />
     <Import Project="packages\microsoft-gsl-library.1.0.7\build\native\microsoft-gsl-library.targets" Condition="Exists('packages\microsoft-gsl-library.1.0.7\build\native\microsoft-gsl-library.targets')" />
-    <Import Project="packages\uc-core.1.0.12\build\native\uc-core.targets" Condition="Exists('packages\uc-core.1.0.12\build\native\uc-core.targets')" />
     <Import Project="packages\boost.1.68.0.0\build\boost.targets" Condition="Exists('packages\boost.1.68.0.0\build\boost.targets')" />
     <Import Project="packages\boost_atomic-vc141.1.68.0.0\build\boost_atomic-vc141.targets" Condition="Exists('packages\boost_atomic-vc141.1.68.0.0\build\boost_atomic-vc141.targets')" />
     <Import Project="packages\boost_bzip2-vc141.1.68.0.0\build\boost_bzip2-vc141.targets" Condition="Exists('packages\boost_bzip2-vc141.1.68.0.0\build\boost_bzip2-vc141.targets')" />
@@ -115,6 +114,7 @@
     <Import Project="packages\boost_wserialization-vc141.1.68.0.0\build\boost_wserialization-vc141.targets" Condition="Exists('packages\boost_wserialization-vc141.1.68.0.0\build\boost_wserialization-vc141.targets')" />
     <Import Project="packages\boost_zlib-vc141.1.68.0.0\build\boost_zlib-vc141.targets" Condition="Exists('packages\boost_zlib-vc141.1.68.0.0\build\boost_zlib-vc141.targets')" />
     <Import Project="packages\boost-vc141.1.68.0.0\build\boost-vc141.targets" Condition="Exists('packages\boost-vc141.1.68.0.0\build\boost-vc141.targets')" />
+    <Import Project="packages\uc-core.1.0.13\build\native\uc-core.targets" Condition="Exists('packages\uc-core.1.0.13\build\native\uc-core.targets')" />
   </ImportGroup>
   <Import Project="build_h.msbuild" />
   <Import Project="build_cpp.msbuild" />
@@ -130,8 +130,6 @@
     <Error Condition="!Exists('packages\uc-serialization-engine.1.0.2\build\native\uc-serialization-engine.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\uc-serialization-engine.1.0.2\build\native\uc-serialization-engine.targets'))" />
     <Error Condition="!Exists('packages\WinPixEventRuntime.1.0.181206001\build\WinPixEventRuntime.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\WinPixEventRuntime.1.0.181206001\build\WinPixEventRuntime.targets'))" />
     <Error Condition="!Exists('packages\microsoft-gsl-library.1.0.7\build\native\microsoft-gsl-library.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\microsoft-gsl-library.1.0.7\build\native\microsoft-gsl-library.targets'))" />
-    <Error Condition="!Exists('packages\uc-core.1.0.12\build\native\uc-core.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\uc-core.1.0.12\build\native\uc-core.props'))" />
-    <Error Condition="!Exists('packages\uc-core.1.0.12\build\native\uc-core.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\uc-core.1.0.12\build\native\uc-core.targets'))" />
     <Error Condition="!Exists('packages\boost.1.68.0.0\build\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\boost.1.68.0.0\build\boost.targets'))" />
     <Error Condition="!Exists('packages\boost_atomic-vc141.1.68.0.0\build\boost_atomic-vc141.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\boost_atomic-vc141.1.68.0.0\build\boost_atomic-vc141.targets'))" />
     <Error Condition="!Exists('packages\boost_bzip2-vc141.1.68.0.0\build\boost_bzip2-vc141.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\boost_bzip2-vc141.1.68.0.0\build\boost_bzip2-vc141.targets'))" />
@@ -175,5 +173,7 @@
     <Error Condition="!Exists('packages\boost_wserialization-vc141.1.68.0.0\build\boost_wserialization-vc141.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\boost_wserialization-vc141.1.68.0.0\build\boost_wserialization-vc141.targets'))" />
     <Error Condition="!Exists('packages\boost_zlib-vc141.1.68.0.0\build\boost_zlib-vc141.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\boost_zlib-vc141.1.68.0.0\build\boost_zlib-vc141.targets'))" />
     <Error Condition="!Exists('packages\boost-vc141.1.68.0.0\build\boost-vc141.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\boost-vc141.1.68.0.0\build\boost-vc141.targets'))" />
+    <Error Condition="!Exists('packages\uc-core.1.0.13\build\native\uc-core.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\uc-core.1.0.13\build\native\uc-core.props'))" />
+    <Error Condition="!Exists('packages\uc-core.1.0.13\build\native\uc-core.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\uc-core.1.0.13\build\native\uc-core.targets'))" />
   </Target>
 </Project>
