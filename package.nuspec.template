@@ -17,6 +17,7 @@
         <dependency id="uc-core"/>
         <dependency id="uc-math"/>
         <dependency id="uc-serialization-engine"/>
+        <dependency id="microsoft-gsl-library"/>
     </dependencies>
   </metadata>
   <files>
