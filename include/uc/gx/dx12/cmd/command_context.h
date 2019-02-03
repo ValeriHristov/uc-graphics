@@ -3,7 +3,6 @@
 
 #include <uc/gx/dx12/cmd/base_command_context.h>
 #include <uc/gx/dx12/cmd/memcpy.h>
-#include <pix3.h>
 
 namespace uc
 {
@@ -187,20 +186,10 @@ namespace uc
                     return allocation;
                 }
 
-                void pix_begin_event(const wchar_t* label)
-                {
-                    PIXBeginEvent(list(), 0, label);
-                }
+                void pix_begin_event(const wchar_t* label);
+                void pix_end_event(void);
+                void pix_set_marker(const wchar_t* label);
 
-                void pix_end_event(void)
-                {
-                    PIXEndEvent(list());
-                }
-
-                void pix_set_marker(const wchar_t* label)
-                {
-                    PIXSetMarker(list(), 0, label);
-                }
 
                 descriptor_handle srv()
                 {

@@ -78,7 +78,6 @@
 <ClInclude Include = "..\include\uc\gx\dx12\gpu\upload_buffer_util.h"/>	
 <ClInclude Include = "..\include\uc\gx\dx12\gpu\upload_buffer_utils.h"/>	
 <ClInclude Include = "..\include\uc\gx\dx12\gpu\virtual_resource.h"/>	
-<ClInclude Include = "..\include\uc\gx\error.h"/>	
 <ClInclude Include = "..\include\uc\gx\geo\geometry_allocator.h"/>	
 <ClInclude Include = "..\include\uc\gx\geo\indexed_geometry.h"/>	
 <ClInclude Include = "..\include\uc\gx\geo\indexed_geometry_allocator.h"/>	
