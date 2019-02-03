@@ -1,5 +1,6 @@
 #include "pch.h"
 
+#include <uc/gx/dx12/gpu/resource_create_context.h>
 #include <uc/gx/geo/skinned_geometry_factory.h>
 #include <uc/gx/geo/geometry_allocator.h>
 

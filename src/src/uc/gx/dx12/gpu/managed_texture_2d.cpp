@@ -1,8 +1,8 @@
 #include "pch.h"
 
+#include <uc/gx/dx12/gpu/resource_create_context.h>
 #include <uc/gx/dx12/gpu/managed_texture_2d.h>
 #include <uc/gx/dx12/gpu/managed_texture_2d_array.h>
-#include <uc/gx/dx12/gpu/resource_create_context.h>
 
 namespace uc
 {

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <uc/gx/dx12/api/error.h>
+#include <cstdint>
 
 #include "virtual_resource.h"
 #include "descriptor_heap.h"
@@ -18,7 +19,7 @@ namespace uc
             {
                 using base = D3D12_SHADER_BYTECODE;
 
-                template <uint32_t s > gpu_shader_code(const BYTE(&arg)[s])
+                template <uint32_t s > gpu_shader_code(const uint8_t(&arg)[s])
                 {
                     pShaderBytecode = &arg[0];
                     BytecodeLength = s;
@@ -45,7 +46,7 @@ namespace uc
             {
                 using base = gpu_shader_code;
 
-                template <uint32_t s > gpu_vertex_shader_code( const BYTE(&arg)[s] ) : base( arg )
+                template <uint32_t s > gpu_vertex_shader_code( const uint8_t(&arg)[s] ) : base( arg )
                 {
 
                 }
@@ -57,7 +58,7 @@ namespace uc
             {
                 using base = gpu_shader_code;
 
-                template <uint32_t s > gpu_pixel_shader_code(const BYTE(&arg)[s]) : base<s>(arg)
+                template <uint32_t s > gpu_pixel_shader_code(const uint8_t(&arg)[s]) : base(arg)
                 {
 
                 }
@@ -69,7 +70,7 @@ namespace uc
             {
                 using base = gpu_shader_code;
 
-                template <uint32_t s > gpu_geometry_shader_code(const BYTE(&arg)[s]) : base(arg)
+                template <uint32_t s > gpu_geometry_shader_code(const uint8_t(&arg)[s]) : base(arg)
                 {
                 }
 
@@ -80,7 +81,7 @@ namespace uc
             {
                 using base = gpu_shader_code;
 
-                template <uint32_t s > gpu_hull_shader_code(const BYTE(&arg)[s]) : base(arg)
+                template <uint32_t s > gpu_hull_shader_code(const uint8_t(&arg)[s]) : base(arg)
                 {
                 }
 
@@ -91,7 +92,7 @@ namespace uc
             {
                 using base = gpu_shader_code;
 
-                template <uint32_t s > gpu_domain_shader_code(const BYTE(&arg)[s]) : base(arg)
+                template <uint32_t s > gpu_domain_shader_code(const uint8_t(&arg)[s]) : base(arg)
                 {
                 }
 
@@ -102,7 +103,7 @@ namespace uc
             {
                 using base = gpu_shader_code;
 
-                template <uint32_t s > gpu_compute_shader_code(const BYTE(&arg)[s]) : base(arg)
+                template <uint32_t s > gpu_compute_shader_code(const uint8_t(&arg)[s]) : base(arg)
                 {
 
                 }

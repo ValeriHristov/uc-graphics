@@ -3,7 +3,7 @@
 #include <cstdint>
 
 #include <uc/util/noncopyable.h>
-#include <boost/pool/object_pool.hpp>
+#include <uc/util/pimpl.h>
 
 namespace uc
 {
@@ -126,6 +126,8 @@ namespace uc
             {
                 public:
 
+                class impl;
+
                 using handle = object_allocation*;
 
                 object_allocator(count max_object_count);
@@ -136,11 +138,8 @@ namespace uc
                 void   free( handle );
 
             private:
-                template<class ElementType>          using object_pool = boost::object_pool<ElementType>;
-                object_pool<object_allocation>       m_memory;
-                object_allocation*                   m_allocations;
+                util::details::pimpl<impl> m_impl;
             };
-            
         }
     }
 }

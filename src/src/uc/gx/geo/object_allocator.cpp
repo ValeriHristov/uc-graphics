@@ -1,6 +1,7 @@
 #include "pch.h"
 
 #include <uc/gx/geo/object_allocator.h>
+#include <boost/pool/object_pool.hpp>
 
 namespace uc
 {
@@ -8,16 +9,32 @@ namespace uc
     {
         namespace geo
         {
-            object_allocator::object_allocator(count max_object_count)
+            class object_allocator::impl
+            {
+                public:
+
+                impl(count max_object_count);
+                ~impl();
+
+                handle allocate(count object_count);
+                handle allocate(count object_count, std::nothrow_t) noexcept;
+                void   free(handle);
+
+                template<class ElementType>          using object_pool = boost::object_pool<ElementType>;
+                object_pool<object_allocation>       m_memory;
+                object_allocation*                   m_allocations;
+            };
+
+            object_allocator::impl::impl(count max_object_count)
             {
                 m_allocations = m_memory.construct(0, max_object_count, true);
             }
 
-            object_allocator::~object_allocator()
+            object_allocator::impl::~impl()
             {
             }
 
-            object_allocator::handle object_allocator::allocate(count object_count)
+            object_allocator::handle object_allocator::impl::allocate(count object_count)
             {
                 handle h = allocate(object_count, std::nothrow_t());
 
@@ -29,7 +46,7 @@ namespace uc
                 return h;
             }
 
-            object_allocator::handle object_allocator::allocate(count object_count, std::nothrow_t) noexcept
+            object_allocator::handle object_allocator::impl::allocate(count object_count, std::nothrow_t) noexcept
             {
                 object_allocation* d = m_allocations;
 
@@ -70,7 +87,7 @@ namespace uc
                 return d;
             }
 
-            void   object_allocator::free(object_allocator::handle h)
+            void   object_allocator::impl::free(object_allocator::handle h)
             {
                 if (h)
                 {
@@ -116,6 +133,31 @@ namespace uc
                         d = n;
                     }
                 }
+            }
+
+            //////////////////////////
+            object_allocator::object_allocator(count max_object_count) : m_impl(max_object_count)
+            {
+            }
+
+            object_allocator::~object_allocator()
+            {
+
+            }
+
+            object_allocator::handle object_allocator::allocate(count object_count)
+            {
+                return m_impl->allocate(object_count);
+            }
+
+            object_allocator::handle object_allocator::allocate(count object_count, std::nothrow_t n) noexcept
+            {
+                return m_impl->allocate(object_count, n);
+            }
+
+            void   object_allocator::free(object_allocator::handle h)
+            {
+                return m_impl->free(h);
             }
         }
     }

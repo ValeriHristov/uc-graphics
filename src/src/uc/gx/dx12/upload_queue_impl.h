@@ -9,7 +9,7 @@
 #include <concurrent_vector.h>
 #include <tuple>
 
-#include <boost/variant.hpp>
+#include <variant>
 
 #include <uc/gx/dx12/cmd/upload_buffer_handle.h>
 #include <uc/gx/dx12/gpu/upload_buffer.h>
@@ -122,7 +122,7 @@ namespace uc
             //holds resources and uploads them to the gpu in batches
             class gpu_upload_queue_impl : public util::noncopyable
             {
-                using task = boost::variant< upload_queue::copy_resource_task, upload_queue::copy_buffer_region_task, upload_queue::copy_texture_region_task, upload_queue::upload_buffer_resource_task> ;
+                using task = std::variant< upload_queue::copy_resource_task, upload_queue::copy_buffer_region_task, upload_queue::copy_texture_region_task, upload_queue::upload_buffer_resource_task> ;
 
                 public:
                 gpu_upload_queue_impl() = default;

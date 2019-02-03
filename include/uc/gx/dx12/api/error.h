@@ -1,6 +1,7 @@
 ﻿#pragma once
 
-#include <uc/error/error.h>
+#include <exception>
+#include <Ole2.h>
 
 namespace uc
 {
@@ -8,31 +9,24 @@ namespace uc
     {
         namespace dx12
         {
-            using base_exception     = ::uc::exception::exception;
-            using com_base_exception = ::uc::exception::windows::com_exception;
+            using exception     = std::exception;
 
-            class exception : public base_exception
+            class com_exception : public exception
             {
-                using base = base_exception;
-
-                public:
-                exception(const char* c) : base(c)
-                {
-
-                }
-            };
-
-            class com_exception : public com_base_exception
-            {
-                using base = com_base_exception;
+                using base = exception;
 
                 public:
 
-                com_exception( HRESULT hr) : base(hr)
+                explicit com_exception(const HRESULT hr) noexcept : base("com exception")
+                    , m_hr(hr)
                 {
 
                 }
+
+            private:
+                HRESULT m_hr;
             };
+
 
             class out_of_memory_exception : public exception
             {
@@ -40,7 +34,7 @@ namespace uc
 
                 public:
 
-                out_of_memory_exception() : base("out of memory")
+                out_of_memory_exception() noexcept : base("out of memory")
                 {
 
                 }

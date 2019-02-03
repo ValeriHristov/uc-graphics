@@ -7,6 +7,7 @@
 #include <wrl/client.h>
 
 #include <uc/util/noncopyable.h>
+#include <uc/gx/dx12/api/error.h>
 
 namespace uc
 {

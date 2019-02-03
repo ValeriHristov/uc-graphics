@@ -1,5 +1,6 @@
 #include "pch.h"
 
+#include <uc/gx/dx12/gpu/resource_create_context.h>
 #include <uc/gx/geo/indexed_mesh_allocator.h>
 
 #include <vector>

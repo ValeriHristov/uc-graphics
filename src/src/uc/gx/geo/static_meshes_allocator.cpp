@@ -1,5 +1,6 @@
 #include "pch.h"
 
+#include <uc/gx/dx12/gpu/resource_create_context.h>
 #include <uc/gx/geo/static_meshes_allocator.h>
 #include <vector>
 #include <uc/util/pimpl_impl.h>

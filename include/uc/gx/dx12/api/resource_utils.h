@@ -132,7 +132,7 @@ namespace uc
                 uint64_t                           row_sizes_in_bytes[max_sub_resources];
 
                 {
-                    D3D12_RESOURCE_DESC desc = pDestinationResource->GetDesc();
+                    D3D12_RESOURCE_DESC desc = destination->GetDesc();
                     Microsoft::WRL::ComPtr<ID3D12Device> d;
                     throw_if_failed(destination->GetDevice(IID_PPV_ARGS(&d)));
                     d->GetCopyableFootprints(&desc, first_sub_resource, sub_resource_count, intermediate_offset, layouts, row_count, row_sizes_in_bytes, &required_size);

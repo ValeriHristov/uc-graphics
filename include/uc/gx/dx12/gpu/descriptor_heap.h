@@ -150,6 +150,7 @@ namespace uc
             class gpu_descriptor_heap : protected increment_policy
             {
                 using increment_policy::increment_offset;
+                using increment_policy::m_offset;
                 using this_type = gpu_descriptor_heap<heap, flags, increment_policy>;
                 
                 public:
@@ -218,8 +219,9 @@ namespace uc
 
                 void reset()
                 {
-                    this->m_offset = 0;
+                    m_offset = 0;
                 }
+
 
                 ID3D12DescriptorHeap* resource() const
                 {

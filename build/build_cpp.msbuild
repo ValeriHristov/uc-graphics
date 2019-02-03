@@ -2,12 +2,34 @@
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003"> 
 
 <ItemGroup>	
-<ClCompile Include = "..\dev\src\pch\pch.cpp"><PrecompiledHeader>Create</PrecompiledHeader></ClCompile>
+<ClCompile Include = "..\src\src\pch\pch.cpp"><PrecompiledHeader>Create</PrecompiledHeader></ClCompile>
 </ItemGroup>
 <ItemGroup>	
-<ClCompile Include = "..\dev\src\gx\lip\animation.cpp" />	
-<ClCompile Include = "..\dev\src\gx\lip\math.cpp" />	
-<ClCompile Include = "..\dev\src\gx\lip\model.cpp" />	
-<ClCompile Include = "..\dev\src\gx\lip\structs.cpp" />	
-<ClCompile Include = "..\dev\src\lip\introspector_intrinsics.cpp" />
+<ClCompile Include = "..\src\src\uc\gx\dx12\buddy_allocator.cpp" />	
+<ClCompile Include = "..\src\src\uc\gx\dx12\coalesceable_allocator.cpp" />	
+<ClCompile Include = "..\src\src\uc\gx\dx12\command_queue.cpp" />	
+<ClCompile Include = "..\src\src\uc\gx\dx12\compute_upload_queue.cpp" />	
+<ClCompile Include = "..\src\src\uc\gx\dx12\gpu\managed_buffer.cpp" />	
+<ClCompile Include = "..\src\src\uc\gx\dx12\gpu\managed_texture_2d.cpp" />	
+<ClCompile Include = "..\src\src\uc\gx\dx12\placement_allocator.cpp" />	
+<ClCompile Include = "..\src\src\uc\gx\dx12\post_effect.cpp" />	
+<ClCompile Include = "..\src\src\uc\gx\dx12\resource_create_context.cpp" />	
+<ClCompile Include = "..\src\src\uc\gx\dx12\texture_2d.cpp" />	
+<ClCompile Include = "..\src\src\uc\gx\dx12\upload_queue.cpp" />	
+<ClCompile Include = "..\src\src\uc\gx\dx12\upload_queue_impl.cpp" />	
+<ClCompile Include = "..\src\src\uc\gx\geo\geometry_allocator.cpp" />	
+<ClCompile Include = "..\src\src\uc\gx\geo\geometry_allocators.cpp" />	
+<ClCompile Include = "..\src\src\uc\gx\geo\indexed_geometry.cpp" />	
+<ClCompile Include = "..\src\src\uc\gx\geo\indexed_geometry_allocator.cpp" />	
+<ClCompile Include = "..\src\src\uc\gx\geo\indexed_geometry_factory.cpp" />	
+<ClCompile Include = "..\src\src\uc\gx\geo\indexed_mesh_allocator.cpp" />	
+<ClCompile Include = "..\src\src\uc\gx\geo\normal_geometry_allocator.cpp" />	
+<ClCompile Include = "..\src\src\uc\gx\geo\normal_meshes_allocator.cpp" />	
+<ClCompile Include = "..\src\src\uc\gx\geo\object_allocator.cpp" />	
+<ClCompile Include = "..\src\src\uc\gx\geo\skinned_geometry_allocator.cpp" />	
+<ClCompile Include = "..\src\src\uc\gx\geo\skinned_geometry_factory.cpp" />	
+<ClCompile Include = "..\src\src\uc\gx\geo\skinned_meshes_allocator.cpp" />	
+<ClCompile Include = "..\src\src\uc\gx\geo\static_geometry_allocator.cpp" />	
+<ClCompile Include = "..\src\src\uc\gx\geo\static_meshes_allocator.cpp" />	
+<ClCompile Include = "..\src\src\uc\gx\geo\vertex_allocator.cpp" />
 </ItemGroup></Project> 

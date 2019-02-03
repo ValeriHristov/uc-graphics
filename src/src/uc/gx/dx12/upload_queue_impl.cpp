@@ -45,7 +45,7 @@ namespace uc
                 {
                     std::for_each(b, e, [&f](const auto& v)
                     {
-                        boost::apply_visitor(f, v);
+                        std::visit(f, v);
                     });
                 }
 
@@ -162,7 +162,7 @@ namespace uc
 
                     for (auto&& i : r)
                     {
-                        boost::apply_visitor( [&submitted_resources] (auto& v)
+                        std::visit( [&submitted_resources] (auto& v)
                         {
                             submitted_resources.push_back(v.m_upload_buffer);
                         }, i);
