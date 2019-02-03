@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003"> 
+
+<ItemGroup>	
+<ClCompile Include = "..\dev\src\pch\pch.cpp"><PrecompiledHeader>Create</PrecompiledHeader></ClCompile>
+</ItemGroup>
+<ItemGroup>	
+<ClCompile Include = "..\dev\src\gx\lip\animation.cpp" />	
+<ClCompile Include = "..\dev\src\gx\lip\math.cpp" />	
+<ClCompile Include = "..\dev\src\gx\lip\model.cpp" />	
+<ClCompile Include = "..\dev\src\gx\lip\structs.cpp" />	
+<ClCompile Include = "..\dev\src\lip\introspector_intrinsics.cpp" />
+</ItemGroup></Project> 
