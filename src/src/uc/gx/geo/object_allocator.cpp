@@ -3,6 +3,8 @@
 #include <uc/gx/geo/object_allocator.h>
 #include <boost/pool/object_pool.hpp>
 
+#include <uc/util/pimpl_impl.h>
+
 namespace uc
 {
     namespace gx
@@ -12,7 +14,7 @@ namespace uc
             class object_allocator::impl
             {
                 public:
-
+                impl() {}
                 impl(count max_object_count);
                 ~impl();
 
@@ -136,6 +138,8 @@ namespace uc
             }
 
             //////////////////////////
+            template uc::util::details::pimpl<object_allocator::impl>;
+
             object_allocator::object_allocator(count max_object_count) : m_impl(max_object_count)
             {
             }
