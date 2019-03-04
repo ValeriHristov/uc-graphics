@@ -3,7 +3,6 @@
 
 #include "command_context.h"
 #include "command_context_allocator.h"
-#include <pix3.h>
 
 
 namespace uc

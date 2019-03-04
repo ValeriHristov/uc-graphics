@@ -11,7 +11,6 @@
 #include <uc/gx/dx12/api/dxgi_helpers.h>
 #include <uc/gx/dx12/api/helpers.h>
 #include <uc/gx/dx12/gpu/fence_value.h>
-#include <pix3.h>
 
 
 namespace uc
@@ -137,15 +136,9 @@ namespace uc
                     return m_fence.Get();
                 }
 
-                void pix_begin_event(const wchar_t* label)
-                {
-                    PIXBeginEvent(m_queue.Get(), 0, label);
-                }
-
-                void pix_end_event(void)
-                {
-                    PIXEndEvent(m_queue.Get());
-                }
+                void pix_begin_event(const wchar_t* label);
+                void pix_end_event(void);
+                void pix_set_marker(const wchar_t* label);
 
                 private:
 

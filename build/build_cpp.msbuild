@@ -7,6 +7,7 @@
 <ItemGroup>	
 <ClCompile Include = "..\src\src\uc\gx\dx12\buddy_allocator.cpp" />	
 <ClCompile Include = "..\src\src\uc\gx\dx12\cmd\command_context.cpp" />	
+<ClCompile Include = "..\src\src\uc\gx\dx12\cmd\command_queue.cpp" />	
 <ClCompile Include = "..\src\src\uc\gx\dx12\coalesceable_allocator.cpp" />	
 <ClCompile Include = "..\src\src\uc\gx\dx12\command_queue.cpp" />	
 <ClCompile Include = "..\src\src\uc\gx\dx12\compute_upload_queue.cpp" />	
