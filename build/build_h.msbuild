@@ -98,5 +98,7 @@
 <ClInclude Include = "..\include\uc\gx\pinhole_camera.h"/>	
 <ClInclude Include = "..\include\uc\gx\structs.h"/>	
 <ClInclude Include = "..\include\uc\gx\view.h"/>	
-<ClInclude Include = "..\include\uc\gx\view_port.h"/>
+<ClInclude Include = "..\include\uc\gx\view_port.h"/>	
+<ClInclude Include = "..\include\uc\gxu\camera_command.h"/>	
+<ClInclude Include = "..\include\uc\gxu\pinhole_camera_dispatcher.h"/>
 </ItemGroup></Project> 

@@ -33,5 +33,7 @@
 <ClCompile Include = "..\src\src\uc\gx\geo\skinned_meshes_allocator.cpp" />	
 <ClCompile Include = "..\src\src\uc\gx\geo\static_geometry_allocator.cpp" />	
 <ClCompile Include = "..\src\src\uc\gx\geo\static_meshes_allocator.cpp" />	
-<ClCompile Include = "..\src\src\uc\gx\geo\vertex_allocator.cpp" />
+<ClCompile Include = "..\src\src\uc\gx\geo\vertex_allocator.cpp" />	
+<ClCompile Include = "..\src\src\uc\gxu\camera_command.cpp" />	
+<ClCompile Include = "..\src\src\uc\gxu\pinhole_camera_dispatcher.cpp" />
 </ItemGroup></Project> 

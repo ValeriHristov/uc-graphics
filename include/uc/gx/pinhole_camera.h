@@ -337,13 +337,11 @@ namespace uc
 
         inline math::float4x4 inverse_perspective_matrix(const orthographic_camera * camera)
         {
-            assert(false); //not implemented
             return math::orthographic_offset_center_lh(camera->x_min(), camera->x_max(), camera->y_min(), camera->y_max(), camera->get_near(), camera->get_far());
         }
 
         inline math::float4x4 inverse_perspective_matrix(const orthographic_camera& camera)
         {
-            assert(false); //not implemented
             return math::orthographic_offset_center_lh(camera.x_min(), camera.x_max(), camera.y_min(), camera.y_max(), camera.get_near(), camera.get_far());
         }
 

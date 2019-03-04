@@ -31,6 +31,7 @@
 <Filter Include = "src\src\uc\gx\dx12\cmd"/>
 <Filter Include = "src\src\uc\gx\dx12\gpu"/>
 <Filter Include = "src\src\uc\gx\geo"/>
+<Filter Include = "src\src\uc\gxu"/>
 </ItemGroup>
 <ItemGroup>	
 <ClCompile Include = "..\src\src\uc\gx\dx12\buddy_allocator.cpp"><Filter>src\src\uc\gx\dx12</Filter></ClCompile>	
@@ -61,7 +62,9 @@
 <ClCompile Include = "..\src\src\uc\gx\geo\skinned_meshes_allocator.cpp"><Filter>src\src\uc\gx\geo</Filter></ClCompile>	
 <ClCompile Include = "..\src\src\uc\gx\geo\static_geometry_allocator.cpp"><Filter>src\src\uc\gx\geo</Filter></ClCompile>	
 <ClCompile Include = "..\src\src\uc\gx\geo\static_meshes_allocator.cpp"><Filter>src\src\uc\gx\geo</Filter></ClCompile>	
-<ClCompile Include = "..\src\src\uc\gx\geo\vertex_allocator.cpp"><Filter>src\src\uc\gx\geo</Filter></ClCompile>
+<ClCompile Include = "..\src\src\uc\gx\geo\vertex_allocator.cpp"><Filter>src\src\uc\gx\geo</Filter></ClCompile>	
+<ClCompile Include = "..\src\src\uc\gxu\camera_command.cpp"><Filter>src\src\uc\gxu</Filter></ClCompile>	
+<ClCompile Include = "..\src\src\uc\gxu\pinhole_camera_dispatcher.cpp"><Filter>src\src\uc\gxu</Filter></ClCompile>
 </ItemGroup>
 <ItemGroup>
 <Filter Include = "include"/>
@@ -73,6 +76,7 @@
 <Filter Include = "include\uc\gx\dx12\gpu"/>
 <Filter Include = "include\uc\gx\dx12\gpu\allocators"/>
 <Filter Include = "include\uc\gx\geo"/>
+<Filter Include = "include\uc\gxu"/>
 </ItemGroup>
 <ItemGroup>	
 <ClInclude Include = "..\include\uc\gx\dx12\api\api.h"><Filter>include\uc\gx\dx12\api</Filter></ClInclude>	
@@ -166,5 +170,7 @@
 <ClInclude Include = "..\include\uc\gx\pinhole_camera.h"><Filter>include\uc\gx</Filter></ClInclude>	
 <ClInclude Include = "..\include\uc\gx\structs.h"><Filter>include\uc\gx</Filter></ClInclude>	
 <ClInclude Include = "..\include\uc\gx\view.h"><Filter>include\uc\gx</Filter></ClInclude>	
-<ClInclude Include = "..\include\uc\gx\view_port.h"><Filter>include\uc\gx</Filter></ClInclude>
+<ClInclude Include = "..\include\uc\gx\view_port.h"><Filter>include\uc\gx</Filter></ClInclude>	
+<ClInclude Include = "..\include\uc\gxu\camera_command.h"><Filter>include\uc\gxu</Filter></ClInclude>	
+<ClInclude Include = "..\include\uc\gxu\pinhole_camera_dispatcher.h"><Filter>include\uc\gxu</Filter></ClInclude>
 </ItemGroup></Project> 
