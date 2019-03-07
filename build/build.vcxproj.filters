@@ -38,7 +38,6 @@
 <ClCompile Include = "..\src\src\uc\gx\dx12\cmd\command_context.cpp"><Filter>src\src\uc\gx\dx12\cmd</Filter></ClCompile>	
 <ClCompile Include = "..\src\src\uc\gx\dx12\cmd\command_queue.cpp"><Filter>src\src\uc\gx\dx12\cmd</Filter></ClCompile>	
 <ClCompile Include = "..\src\src\uc\gx\dx12\coalesceable_allocator.cpp"><Filter>src\src\uc\gx\dx12</Filter></ClCompile>	
-<ClCompile Include = "..\src\src\uc\gx\dx12\command_queue.cpp"><Filter>src\src\uc\gx\dx12</Filter></ClCompile>	
 <ClCompile Include = "..\src\src\uc\gx\dx12\compute_upload_queue.cpp"><Filter>src\src\uc\gx\dx12</Filter></ClCompile>	
 <ClCompile Include = "..\src\src\uc\gx\dx12\gpu\managed_buffer.cpp"><Filter>src\src\uc\gx\dx12\gpu</Filter></ClCompile>	
 <ClCompile Include = "..\src\src\uc\gx\dx12\gpu\managed_texture_2d.cpp"><Filter>src\src\uc\gx\dx12\gpu</Filter></ClCompile>	
