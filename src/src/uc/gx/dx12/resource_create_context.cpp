@@ -616,6 +616,7 @@ namespace uc
                     Microsoft::WRL::ComPtr<ID3D12Resource>  resource;
 
                     D3D12_RENDER_TARGET_VIEW_DESC rtv = {};
+                    rtv.Format = format;
                     rtv.ViewDimension = D3D12_RTV_DIMENSION_TEXTURE2D;
                     rtv.Texture2D.MipSlice = 0;
 
