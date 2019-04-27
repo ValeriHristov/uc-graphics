@@ -20,6 +20,9 @@
 #include "managed_texture_2d.h"
 #include "managed_texture_2d_array.h"
 #include "managed_read_write_texture_2d.h"
+#include "managed_frame_color_buffer.h"
+#include "managed_frame_depth_buffer.h"
+#include "managed_frame_depth_msaa_buffer.h"
 
 
 #include "pipeline_state.h"
