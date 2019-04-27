@@ -11,6 +11,9 @@
 <ClCompile Include = "..\src\src\uc\gx\dx12\coalesceable_allocator.cpp" />	
 <ClCompile Include = "..\src\src\uc\gx\dx12\compute_upload_queue.cpp" />	
 <ClCompile Include = "..\src\src\uc\gx\dx12\gpu\managed_buffer.cpp" />	
+<ClCompile Include = "..\src\src\uc\gx\dx12\gpu\managed_frame_color_buffer.cpp" />	
+<ClCompile Include = "..\src\src\uc\gx\dx12\gpu\managed_frame_depth_buffer.cpp" />	
+<ClCompile Include = "..\src\src\uc\gx\dx12\gpu\managed_frame_depth_msaa_buffer.cpp" />	
 <ClCompile Include = "..\src\src\uc\gx\dx12\gpu\managed_texture_2d.cpp" />	
 <ClCompile Include = "..\src\src\uc\gx\dx12\placement_allocator.cpp" />	
 <ClCompile Include = "..\src\src\uc\gx\dx12\post_effect.cpp" />	
