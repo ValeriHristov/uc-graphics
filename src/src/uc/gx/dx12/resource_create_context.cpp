@@ -206,6 +206,7 @@ namespace uc
 				concurrency::concurrent_vector< gpu_frame_color_buffer* >               m_frame_delete_color_buffer_array[3];
 				concurrency::concurrent_vector< gpu_depth_buffer* >				        m_frame_delete_depth_buffer_array[3];
 				concurrency::concurrent_vector< gpu_frame_msaa_depth_buffer* >			m_frame_delete_msaa_depth_buffer_array[3];
+				concurrency::concurrent_vector< gpu_upload_buffer* >					m_frame_delete_upload_buffer[3];
 
 
                 //buffers
@@ -233,9 +234,11 @@ namespace uc
 				void    free_frame_msaa_depth_buffer_internal(gpu_frame_msaa_depth_buffer* texture);
 				void    flush_deleted_frame_msaa_depth_buffer(uint32_t frame_index);
 
-
                 void    free_buffer_internal(gpu_buffer* buffer);
                 void    flush_deleted_buffers(uint32_t frame_index);
+
+				void    free_upload_buffer_internal(gpu_upload_buffer* buffer);
+				void    flush_deleted_upload_buffers(uint32_t frame_index);
             };
             
             gpu_resource_create_context::gpu_resource_create_context_impl::gpu_resource_create_context_impl(ID3D12Device* device) :
@@ -921,6 +924,13 @@ namespace uc
                 buffers.push_back(buffer);
             }
 
+			void gpu_resource_create_context::free_upload_buffer(gpu_upload_buffer* buffer)
+			{
+				std::lock_guard< std::mutex  > lock(m_impl->m_delete_buffers_mutex);
+				auto& buffers = m_impl->m_frame_delete_upload_buffer[m_impl->m_frame_index];
+				buffers.push_back(buffer);
+			}
+
             void gpu_resource_create_context::gpu_resource_create_context_impl::free_buffer_internal(gpu_buffer* buffer)
             {
                 auto allocator = geometry_allocator();
@@ -940,6 +950,24 @@ namespace uc
 
                 buffers.clear();
             }
+
+			void gpu_resource_create_context::gpu_resource_create_context_impl::free_upload_buffer_internal(gpu_upload_buffer* buffer)
+			{
+				delete buffer;
+			}
+
+			void gpu_resource_create_context::gpu_resource_create_context_impl::flush_deleted_upload_buffers(uint32_t frame_index)
+			{
+				std::lock_guard< std::mutex  > lock(m_delete_buffers_mutex);
+				auto& buffers = m_frame_delete_upload_buffer[frame_index];
+
+				for (auto&& t : buffers)
+				{
+					free_upload_buffer_internal(t);
+				}
+
+				buffers.clear();
+			}
 
             void gpu_resource_create_context::sync()
             {

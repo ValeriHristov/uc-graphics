@@ -47,7 +47,9 @@ namespace uc
 
                 //Transfer accross the pci bus
                 gpu_upload_buffer*				create_upload_buffer(uint64_t size);
-                gpu_read_back_buffer*			create_read_back_buffer(uint64_t size);
+				void							free_upload_buffer(gpu_upload_buffer* b);
+
+				gpu_read_back_buffer*			create_read_back_buffer(uint64_t size);
 
                 //Frame buffers
                 gpu_frame_color_buffer*			create_frame_color_buffer(uint32_t width, uint32_t height, DXGI_FORMAT format, D3D12_RESOURCE_STATES initial_state = D3D12_RESOURCE_STATE_COMMON);

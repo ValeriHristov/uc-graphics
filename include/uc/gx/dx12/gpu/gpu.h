@@ -1,10 +1,12 @@
 #pragma once
 
 #include "resource.h"
+#include "buffer.h"
 #include "depth_buffer.h"
 #include "pixel_buffer.h"
 #include "texture_2d.h"
 #include "texture_2d_array.h"
+#include "upload_buffer.h"
 
 #include "allocators/allocators.h"
 
@@ -23,6 +25,7 @@
 #include "managed_frame_color_buffer.h"
 #include "managed_frame_depth_buffer.h"
 #include "managed_frame_depth_msaa_buffer.h"
+#include "managed_upload_buffer.h"
 
 
 #include "pipeline_state.h"
