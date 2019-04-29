@@ -133,6 +133,8 @@ namespace uc
                         {
                             root_index = root_indices[i];
 
+							f(root_index, start);
+
                             D3D12_CPU_DESCRIPTOR_HANDLE  destination = start;
 
                             D3D12_CPU_DESCRIPTOR_HANDLE* src        = m_data.begin(root_index);
@@ -150,8 +152,6 @@ namespace uc
                             }
 
                             m_device->CopyDescriptors(1, dest_range_start, dest_range_size, src_size, src_range_start, src_range_size, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-							
-							f(root_index, start);
 
                             start = start + src_size;
                         }
