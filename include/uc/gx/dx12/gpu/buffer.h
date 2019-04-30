@@ -18,26 +18,37 @@ namespace uc
 
                 public:
 
-                    gpu_buffer( ) : base( nullptr )
-                    {
-
-                    }
+					gpu_buffer() = default;
+					~gpu_buffer() = default;
 
                     gpu_buffer(ID3D12Resource* resource) :
                         base(resource)
                     {
 
                     }
-
-                    ~gpu_buffer()
-                    {
-                    }
-
-                    private:
-
-                    persistent_cpu_srv_descriptor_heap_handle    m_uav;
-                    persistent_cpu_srv_descriptor_heap_handle    m_srv;
             };
+
+			class byteaddress_gpu_buffer : public gpu_buffer
+			{
+				using base = gpu_buffer;
+
+				public:
+
+				byteaddress_gpu_buffer() = default;
+				~byteaddress_gpu_buffer() = default;
+
+				byteaddress_gpu_buffer(ID3D12Resource* resource, persistent_cpu_srv_descriptor_heap_handle srv, persistent_cpu_srv_descriptor_heap_handle uav) :
+					base(resource)
+					, m_srv(std::move(srv))
+					, m_uav(std::move(uav))
+				{
+
+				}
+
+				private:
+				persistent_cpu_srv_descriptor_heap_handle    m_srv;
+				persistent_cpu_srv_descriptor_heap_handle    m_uav;
+			};
 
             inline uint64_t size( const gpu_buffer* r )
             {

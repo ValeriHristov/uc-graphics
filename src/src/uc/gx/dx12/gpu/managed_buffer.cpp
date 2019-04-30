@@ -12,10 +12,15 @@ namespace uc
         {
             namespace details
             {
-                    void gpu_buffer_deleter::operator () (gpu_buffer* d)
-                    {
-                        m_rc->free_buffer(d);
-                    }
+                void gpu_buffer_deleter::operator () (gpu_buffer* d)
+                {
+                    m_rc->free_buffer(d);
+                }
+
+				void byteaddress_gpu_buffer_deleter::operator () (byteaddress_gpu_buffer* d)
+				{
+					m_rc->free_byteaddress_buffer(d);
+				}
             }
         }
     }

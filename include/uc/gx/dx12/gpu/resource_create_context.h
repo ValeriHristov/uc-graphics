@@ -12,6 +12,7 @@ namespace uc
         {
             class gpu_back_buffer;
             class gpu_buffer;
+			class byteaddress_gpu_buffer;
 
             class gpu_frame_color_buffer;
             class gpu_frame_depth_buffer;
@@ -36,14 +37,14 @@ namespace uc
                 gpu_resource_create_context(ID3D12Device* device);
 
                 //Read only assets
-                gpu_texture_2d*            create_texture_2d(uint32_t width, uint32_t height, DXGI_FORMAT format);
-                gpu_texture_2d*            create_texture_2d(uint32_t width, uint32_t height, DXGI_FORMAT format, uint32_t mip_count);
-                gpu_read_write_texture_2d* create_read_write_texture_2d(uint32_t width, uint32_t height, DXGI_FORMAT format, uint32_t mip_count);
-                gpu_texture_2d_array*      create_texture_2d_array(uint32_t width, uint32_t height, DXGI_FORMAT format, uint32_t elements);
+                gpu_texture_2d*					create_texture_2d(uint32_t width, uint32_t height, DXGI_FORMAT format);
+                gpu_texture_2d*					create_texture_2d(uint32_t width, uint32_t height, DXGI_FORMAT format, uint32_t mip_count);
+                gpu_read_write_texture_2d*		create_read_write_texture_2d(uint32_t width, uint32_t height, DXGI_FORMAT format, uint32_t mip_count);
+                gpu_texture_2d_array*			create_texture_2d_array(uint32_t width, uint32_t height, DXGI_FORMAT format, uint32_t elements);
 
-                void                       free_texture_2d( gpu_texture_2d* texture );
-                void                       free_texture_2d_array(gpu_texture_2d_array* texture);
-                void                       free_read_write_texture_2d(gpu_read_write_texture_2d* texture);
+                void							free_texture_2d( gpu_texture_2d* texture );
+                void							free_texture_2d_array(gpu_texture_2d_array* texture);
+                void							free_read_write_texture_2d(gpu_read_write_texture_2d* texture);
 
                 //Transfer accross the pci bus
                 gpu_upload_buffer*				create_upload_buffer(uint64_t size);
@@ -67,10 +68,13 @@ namespace uc
 
 				gpu_back_buffer*                create_back_buffer(ID3D12Resource* r);
 
-				gpu_buffer*						create_buffer(uint32_t elements, uint32_t element_size = 1);
+				gpu_buffer*						create_buffer(uint32_t elements, uint32_t element_size = 1, D3D12_RESOURCE_STATES initial_state = D3D12_RESOURCE_STATE_COMMON);
                 void							free_buffer(gpu_buffer* buffer);
 
-                //called on present to swap the allocators
+				byteaddress_gpu_buffer*			create_byteaddress_buffer(uint32_t size, D3D12_RESOURCE_STATES initial_state = D3D12_RESOURCE_STATE_COMMON);
+				void							free_byteaddress_buffer(byteaddress_gpu_buffer* buffer);
+
+				//called on present to swap the allocators
                 void sync();
 
                 void reset_view_dependent_resources();
