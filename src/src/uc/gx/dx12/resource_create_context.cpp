@@ -920,6 +920,7 @@ namespace uc
                 {
                     std::lock_guard< std::mutex  > lock(m_impl->m_delete_buffers_mutex);
                     resource = allocator->create_placed_resource(&desc, initial_state);
+					resource->SetName(L"Buffer");
                 }
 
                 return new gpu_buffer(resource.Get());
@@ -952,6 +953,10 @@ namespace uc
 				{
 					std::lock_guard< std::mutex  > lock(m_impl->m_delete_buffers_mutex);
 					resource = allocator->create_placed_resource(&desc, initial_state);
+					resource->SetName(L"ByteAddressBuffer");
+
+					uav = persistent_cpu_srv_descriptor_heap_handle::make(&m_impl->m_textures_descriptor_heap);
+					srv = persistent_cpu_srv_descriptor_heap_handle::make(&m_impl->m_textures_descriptor_heap);
 				}
 
 				m_impl->m_device->CreateUnorderedAccessView(resource.Get(), nullptr, &descUAV, uav.handle());
