@@ -451,6 +451,7 @@ namespace uc
                 persistent_cpu_srv_descriptor_heap_handle srv;
 
                 {
+					desc.Flags |= D3D12_RESOURCE_FLAG_ALLOW_UNORDERED_ACCESS;
                     std::lock_guard< std::mutex  > lock(m_impl->m_delete_textures_mutex);
                     resource = allocator->create_placed_resource(&desc, D3D12_RESOURCE_STATE_COMMON);
 
