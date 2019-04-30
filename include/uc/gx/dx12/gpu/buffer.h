@@ -45,6 +45,16 @@ namespace uc
 
 				}
 
+				descriptor_handle srv() const
+				{
+					return m_srv.m_handle;
+				}
+
+				descriptor_handle uav() const
+				{
+					return m_uav.m_handle;
+				}
+
 				private:
 				persistent_cpu_srv_descriptor_heap_handle    m_srv;
 				persistent_cpu_srv_descriptor_heap_handle    m_uav;
