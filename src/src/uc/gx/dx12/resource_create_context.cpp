@@ -952,6 +952,7 @@ namespace uc
 				descUAV.Buffer.Flags		= D3D12_BUFFER_UAV_FLAG_RAW;
 
 				{
+					desc.Flags |= D3D12_RESOURCE_FLAG_ALLOW_UNORDERED_ACCESS;
 					std::lock_guard< std::mutex  > lock(m_impl->m_delete_buffers_mutex);
 					resource = allocator->create_placed_resource(&desc, initial_state);
 					resource->SetName(L"ByteAddressBuffer");
