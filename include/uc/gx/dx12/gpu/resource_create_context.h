@@ -37,10 +37,10 @@ namespace uc
                 gpu_resource_create_context(ID3D12Device* device);
 
                 //Read only assets
-                gpu_texture_2d*					create_texture_2d(uint32_t width, uint32_t height, DXGI_FORMAT format);
-                gpu_texture_2d*					create_texture_2d(uint32_t width, uint32_t height, DXGI_FORMAT format, uint32_t mip_count);
-                gpu_read_write_texture_2d*		create_read_write_texture_2d(uint32_t width, uint32_t height, DXGI_FORMAT format, uint32_t mip_count);
-                gpu_texture_2d_array*			create_texture_2d_array(uint32_t width, uint32_t height, DXGI_FORMAT format, uint32_t elements);
+                gpu_texture_2d*					create_texture_2d(uint32_t width, uint32_t height, DXGI_FORMAT format, D3D12_RESOURCE_STATES initial_state = D3D12_RESOURCE_STATE_COMMON);
+                gpu_texture_2d*					create_texture_2d(uint32_t width, uint32_t height, DXGI_FORMAT format, uint32_t mip_count, D3D12_RESOURCE_STATES initial_state = D3D12_RESOURCE_STATE_COMMON);
+                gpu_read_write_texture_2d*		create_read_write_texture_2d(uint32_t width, uint32_t height, DXGI_FORMAT format, uint32_t mip_count, D3D12_RESOURCE_STATES initial_state = D3D12_RESOURCE_STATE_COMMON);
+				gpu_texture_2d_array*			create_texture_2d_array(uint32_t width, uint32_t height, DXGI_FORMAT format, uint32_t elements, D3D12_RESOURCE_STATES initial_state = D3D12_RESOURCE_STATE_COMMON);
 
                 void							free_texture_2d( gpu_texture_2d* texture );
                 void							free_texture_2d_array(gpu_texture_2d_array* texture);

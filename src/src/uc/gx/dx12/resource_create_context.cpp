@@ -407,7 +407,7 @@ namespace uc
                 return m_impl->m_linear_wrap_sampler;
             }
 
-            gpu_texture_2d* gpu_resource_create_context::create_texture_2d(uint32_t width, uint32_t height, DXGI_FORMAT format, uint32_t mip_count)
+            gpu_texture_2d* gpu_resource_create_context::create_texture_2d(uint32_t width, uint32_t height, DXGI_FORMAT format, uint32_t mip_count, D3D12_RESOURCE_STATES initial_state)
             {
                 auto desc = describe_texture_2d(width, height, format, 0);
 
@@ -418,7 +418,7 @@ namespace uc
 
                 {
                     std::lock_guard< std::mutex  > lock(m_impl->m_delete_textures_mutex);
-                    resource = allocator->create_placed_resource(&desc, D3D12_RESOURCE_STATE_COMMON);
+                    resource = allocator->create_placed_resource(&desc, initial_state);
 
                     resource->SetName(L"Texture 2D");
 
@@ -440,7 +440,7 @@ namespace uc
                 return new gpu_texture_2d(resource.Get(), std::move(srv));
             }
 
-            gpu_read_write_texture_2d* gpu_resource_create_context::create_read_write_texture_2d(uint32_t width, uint32_t height, DXGI_FORMAT format, uint32_t mip_count)
+            gpu_read_write_texture_2d* gpu_resource_create_context::create_read_write_texture_2d(uint32_t width, uint32_t height, DXGI_FORMAT format, uint32_t mip_count, D3D12_RESOURCE_STATES initial_state)
             {
                 auto desc = describe_texture_2d(width, height, format, D3D12_RESOURCE_FLAG_ALLOW_UNORDERED_ACCESS);
 
@@ -453,7 +453,7 @@ namespace uc
                 {
 					desc.Flags |= D3D12_RESOURCE_FLAG_ALLOW_UNORDERED_ACCESS;
                     std::lock_guard< std::mutex  > lock(m_impl->m_delete_textures_mutex);
-                    resource = allocator->create_placed_resource(&desc, D3D12_RESOURCE_STATE_COMMON);
+                    resource = allocator->create_placed_resource(&desc, initial_state);
 
                     resource->SetName(L"Texture 2D");
 
@@ -483,12 +483,12 @@ namespace uc
             }
 
             //texture2d
-            gpu_texture_2d* gpu_resource_create_context::create_texture_2d( uint32_t width, uint32_t height, DXGI_FORMAT format )
+            gpu_texture_2d* gpu_resource_create_context::create_texture_2d( uint32_t width, uint32_t height, DXGI_FORMAT format, D3D12_RESOURCE_STATES initial_state)
             {
-                return create_texture_2d(width, height, format, 1);
+                return create_texture_2d(width, height, format, 1, initial_state);
             }
 
-            gpu_texture_2d_array* gpu_resource_create_context::create_texture_2d_array(uint32_t width, uint32_t height, DXGI_FORMAT format, uint32_t elements)
+            gpu_texture_2d_array* gpu_resource_create_context::create_texture_2d_array(uint32_t width, uint32_t height, DXGI_FORMAT format, uint32_t elements, D3D12_RESOURCE_STATES initial_state)
             {
                 auto desc = describe_texture(width, height, elements, 1, format, 0);
 
