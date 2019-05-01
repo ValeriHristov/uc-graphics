@@ -179,6 +179,8 @@ namespace uc
                     copy_buffer_region(destination, destination_offset, allocation.resource(), allocation.offset(), byte_count);
                 }
 
+				void upload_resource(gpu_resource* r, uint32_t first_sub_resource, uint32_t sub_resource_count, D3D12_SUBRESOURCE_DATA sub_resource_data[]);
+
                 gpu_upload_allocation upload_buffer(const void* buffer, size_t byte_count)
                 {
                     auto allocation = m_upload_allocator.allocate(byte_count, 512);
