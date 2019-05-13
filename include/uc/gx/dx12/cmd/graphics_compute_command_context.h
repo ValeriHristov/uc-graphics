@@ -331,6 +331,16 @@ namespace uc
                     list()->SetGraphicsRootUnorderedAccessView(root_index, 0);
                 }
 
+				void set_graphics_root_constant(uint32_t root_index, uint32_t v, uint32_t offset = 0)
+				{
+					list()->SetGraphicsRoot32BitConstant(root_index, v, offset);
+				}
+
+				void set_graphics_root_constants(uint32_t root_index, uint32_t value_count, const void* data, uint32_t offset = 0)
+				{
+					list()->SetGraphicsRoot32BitConstants(root_index, value_count, data, offset);
+				}
+
                 void set_graphics_constant_buffer(uint32_t root_index, D3D12_GPU_VIRTUAL_ADDRESS address)
                 {
                     list()->SetGraphicsRootConstantBufferView(root_index, address);
@@ -487,6 +497,16 @@ namespace uc
                 {
                     list()->SetComputeRootUnorderedAccessView(root_index, 0);
                 }
+
+				void set_compute_root_constant(uint32_t root_index, uint32_t v, uint32_t offset = 0)
+				{
+					list()->SetComputeRoot32BitConstant(root_index, v, offset);
+				}
+
+				void set_compute_root_constants(uint32_t root_index, uint32_t value_count, const void* data, uint32_t offset = 0)
+				{
+					list()->SetComputeRoot32BitConstants(root_index, value_count, data, offset);
+				}
 
                 void set_compute_constant_buffer(uint32_t root_index, D3D12_GPU_VIRTUAL_ADDRESS address)
                 {
