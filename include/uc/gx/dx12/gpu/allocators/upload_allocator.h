@@ -175,12 +175,13 @@ namespace uc
                         return allocation;
                     }
                     else
-                    {
-                        std::unique_ptr<gpu_upload_page> page = std::unique_ptr<gpu_upload_page>(allocate_page());
-                        auto allocation = gpu_upload_allocation(m_page.get(), m_offset);
-                        m_buffers.emplace_back(std::move(page));
-                        return allocation;
-                    }
+					{
+						std::unique_ptr<gpu_upload_page> page = std::unique_ptr<gpu_upload_page>(allocate_page(size));
+						auto allocation = gpu_upload_allocation(page.get(), 0);
+						m_buffers.emplace_back(std::move(page));
+						return allocation;
+					}
+
                 }
 
                 void reset()
