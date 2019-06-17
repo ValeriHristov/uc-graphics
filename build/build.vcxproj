@@ -57,6 +57,7 @@
       <AdditionalIncludeDirectories>../src/pch;../include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <ProgramDataBaseFileName>$(SolutionDir)..\lib\win-$(Platform)\$(Configuration)\$(TargetName).pdb</ProgramDataBaseFileName>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
