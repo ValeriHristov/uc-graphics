@@ -2,6 +2,7 @@
 
 #include <assert.h>
 #include <cstdint>
+#include <algorithm>
 #include <uc/util/noncopyable.h>
 
 namespace uc

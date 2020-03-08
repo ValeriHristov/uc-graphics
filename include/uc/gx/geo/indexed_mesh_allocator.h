@@ -62,7 +62,7 @@ namespace uc
                 util::details::pimpl<index_buffer_allocator_impl> m_impl;
             };
 
-            namespace details
+            namespace 
             {
                 struct index_buffer_allocation_deleter
                 {
@@ -78,12 +78,12 @@ namespace uc
                 };
             }
 
-            using managed_indexed_mesh = std::unique_ptr< index_buffer_allocator::allocation, details::index_buffer_allocation_deleter >;
+            using managed_indexed_mesh = std::unique_ptr< index_buffer_allocator::allocation, index_buffer_allocation_deleter >;
 
             template <typename ...args>
             inline managed_indexed_mesh make_index_buffer(index_buffer_allocator* rc, args&&... a)
             {
-                return managed_skinned_mesh(rc->allocate(std::forward<args>(a)...), details::indexed_meshes_allocation_deleter(rc));
+                return managed_indexed_mesh(rc->allocate(std::forward<args>(a)...), index_buffer_allocation_deleter(rc));
             }
         }
     }
