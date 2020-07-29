@@ -526,6 +526,12 @@ namespace uc
                     set_compute_constant_buffer(root_index, buffer, sizeof(t));
                 }
 
+                template<typename t>
+                void set_compute_constant_buffer(uint32_t root_index, const t& buffer)
+                {
+                    set_graphics_constant_buffer(root_index, &buffer, sizeof(t));
+                }
+
                 void set_compute_dynamic_constant_buffer(uint32_t root_index, uint32_t offset, const void* buffer, size_t byte_count)
                 {
                     auto allocation = m_upload_allocator.allocate(byte_count, 256);
@@ -544,7 +550,13 @@ namespace uc
                 template <typename t>
                 void set_compute_dynamic_constant_buffer(uint32_t root_index, uint32_t offset, const t* buffer)
                 {
-                    set_dynamic_constant_buffer(root_index, offset, buffer, sizeof(t));
+                    set_compute_dynamic_constant_buffer(root_index, offset, buffer, sizeof(t));
+                }
+
+                template <typename t>
+                void set_compute_dynamic_constant_buffer(uint32_t root_index, uint32_t offset, const t& buffer)
+                {
+                    set_compute_dynamic_constant_buffer(root_index, offset, &buffer, sizeof(t));
                 }
 
                 void set_compute_root_descriptor_table(uint32_t root_index, D3D12_GPU_DESCRIPTOR_HANDLE h)
