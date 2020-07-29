@@ -529,7 +529,7 @@ namespace uc
                 template<typename t>
                 void set_compute_constant_buffer(uint32_t root_index, const t& buffer)
                 {
-                    set_graphics_constant_buffer(root_index, &buffer, sizeof(t));
+                    set_compute_constant_buffer(root_index, &buffer, sizeof(t));
                 }
 
                 void set_compute_dynamic_constant_buffer(uint32_t root_index, uint32_t offset, const void* buffer, size_t byte_count)
