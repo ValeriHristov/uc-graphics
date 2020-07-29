@@ -10,6 +10,7 @@ namespace uc
         {
             class gpu_resource_create_context;
             class gpu_buffer;
+            class gpu_byteaddress_buffer;
 
             namespace details
             {
@@ -28,12 +29,13 @@ namespace uc
 
 					byteaddress_gpu_buffer_deleter() = default;
 					byteaddress_gpu_buffer_deleter(gpu_resource_create_context* rc) : m_rc(rc) {}
-					void operator () (byteaddress_gpu_buffer* d);
+					void operator () (gpu_byteaddress_buffer* d);
 				};
+
             }
 
-            using managed_gpu_buffer				= std::unique_ptr< gpu_buffer, details::gpu_buffer_deleter >;
-			using managed_byteaddress_gpu_buffer	= std::unique_ptr< byteaddress_gpu_buffer, details::byteaddress_gpu_buffer_deleter >;
+            using managed_gpu_buffer				    = std::unique_ptr< gpu_buffer, details::gpu_buffer_deleter >;
+			using managed_gpu_byteaddress_buffer	    = std::unique_ptr< gpu_byteaddress_buffer, details::byteaddress_gpu_buffer_deleter >;
 
             template <typename ...args>
             inline managed_gpu_buffer create_buffer(gpu_resource_create_context* rc, args&&... a)
@@ -42,7 +44,7 @@ namespace uc
             }
 
 			template <typename ...args>
-			inline managed_byteaddress_gpu_buffer create_byteaddress_buffer(gpu_resource_create_context* rc, args&& ... a)
+			inline managed_gpu_byteaddress_buffer create_byteaddress_buffer(gpu_resource_create_context* rc, args&& ... a)
 			{
 				return managed_byteaddress_gpu_buffer(rc->create_byteaddress_buffer(std::forward<args>(a)...), details::byteaddress_gpu_buffer_deleter(rc));
 			}

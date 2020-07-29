@@ -12,11 +12,12 @@ namespace uc
         {
             class gpu_back_buffer;
             class gpu_buffer;
-			class byteaddress_gpu_buffer;
+			class gpu_byteaddress_buffer;
 
             class gpu_frame_color_buffer;
             class gpu_frame_depth_buffer;
             class gpu_frame_msaa_depth_buffer;
+            class gpu_frame_byteaddress_buffer;
 
             class gpu_read_back_buffer;
             class gpu_texture_2d;
@@ -71,8 +72,11 @@ namespace uc
 				gpu_buffer*						create_buffer(uint32_t elements, uint32_t element_size = 1, D3D12_RESOURCE_STATES initial_state = D3D12_RESOURCE_STATE_COMMON);
                 void							free_buffer(gpu_buffer* buffer);
 
-				byteaddress_gpu_buffer*			create_byteaddress_buffer(uint32_t size, D3D12_RESOURCE_STATES initial_state = D3D12_RESOURCE_STATE_COMMON);
-				void							free_byteaddress_buffer(byteaddress_gpu_buffer* buffer);
+				gpu_byteaddress_buffer*			create_byteaddress_buffer(uint32_t size, D3D12_RESOURCE_STATES initial_state = D3D12_RESOURCE_STATE_COMMON);
+				void							free_byteaddress_buffer(gpu_byteaddress_buffer* buffer);
+
+                gpu_frame_byteaddress_buffer*   create_frame_byteaddress_buffer(uint32_t size, D3D12_RESOURCE_STATES initial_state = D3D12_RESOURCE_STATE_COMMON);
+                void							free_frame_byteaddress_buffer(gpu_frame_byteaddress_buffer* buffer);
 
 				//called on present to swap the allocators
                 void sync();

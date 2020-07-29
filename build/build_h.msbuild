@@ -57,6 +57,7 @@
 <ClInclude Include = "..\include\uc\gx\dx12\gpu\gpu.h"/>	
 <ClInclude Include = "..\include\uc\gx\dx12\gpu\info.h"/>	
 <ClInclude Include = "..\include\uc\gx\dx12\gpu\managed_buffer.h"/>	
+<ClInclude Include = "..\include\uc\gx\dx12\gpu\managed_frame_buffer.h"/>	
 <ClInclude Include = "..\include\uc\gx\dx12\gpu\managed_frame_color_buffer.h"/>	
 <ClInclude Include = "..\include\uc\gx\dx12\gpu\managed_frame_depth_buffer.h"/>	
 <ClInclude Include = "..\include\uc\gx\dx12\gpu\managed_frame_depth_msaa_buffer.h"/>	
