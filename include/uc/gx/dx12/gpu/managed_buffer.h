@@ -46,7 +46,7 @@ namespace uc
 			template <typename ...args>
 			inline managed_gpu_byteaddress_buffer create_byteaddress_buffer(gpu_resource_create_context* rc, args&& ... a)
 			{
-				return managed_byteaddress_gpu_buffer(rc->create_byteaddress_buffer(std::forward<args>(a)...), details::byteaddress_gpu_buffer_deleter(rc));
+				return managed_gpu_byteaddress_buffer(rc->create_byteaddress_buffer(std::forward<args>(a)...), details::byteaddress_gpu_buffer_deleter(rc));
 			}
         }
     }
