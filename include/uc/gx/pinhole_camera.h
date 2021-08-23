@@ -30,6 +30,17 @@ namespace uc
                 return m_up_ws;
             }
 
+            math::float4 right() const 
+            {
+                return m_right_ws;
+            }
+
+            math::float4 lookat() const
+            {
+                return m_lookat_ws;
+            }
+
+
             //perspective parameters
             float				fov() const
             {
@@ -67,6 +78,16 @@ namespace uc
                 m_up_ws = up_ws;
             }
 
+            void set_right(math::float4 right_ws)
+            {
+                m_right_ws = right_ws;
+            }
+
+            void set_lookat(math::float4 lookat_ws)
+            {
+                m_lookat_ws = lookat_ws;
+            }
+
             //perspective parameters
             void set_fov(float	fov)
             {
@@ -91,10 +112,11 @@ namespace uc
         public:
 
             //view parameters
+            math::float4 m_lookat_ws        = math::vector3(0, 0, -5);
             math::float4 m_view_position_ws = math::set(0.0f, 0.0f, 0.0f, 1.0f);
             math::float4 m_forward_ws       = math::set(0.0f, 0.0f, 1.0f, 0.0f);;
             math::float4 m_up_ws            = math::set(0.0f, 1.0f, 0.0f, 0.0f);
-
+            math::float4 m_right_ws         = math::cross3(m_forward_ws, m_up_ws);
             //perspective parameters
             float   m_fov          = 3.1415f / 4.0f;
             float   m_aspect_ratio = 16.0f / 9.0f;
@@ -251,10 +273,43 @@ namespace uc
                 math::float4 forward_ = math::normalize3(math::sub(look_at, position));
                 math::float4 up_ = math::normalize3(up);
 
+                c->set_lookat(math::normalize3(look_at));
                 c->set_view_position(position);
                 c->set_forward(forward_);
                 c->set_up(up_);
+                c->set_right(math::normalize3(math::cross3(forward_, up_)));
             }
+
+            inline void walk(pinhole_camera* c, float dt)
+            {
+                c->set_view_position( math::add(c->position(), math::mul(c->forward(), dt)));
+            }
+
+            inline void strafe(pinhole_camera* c, float dt)
+            {
+                c->set_view_position( math::add(c->position(), math::mul(c->right(), dt)));
+            }
+
+            inline void pitch(pinhole_camera* c, float dy)
+            {
+                math::afloat4 quaty = math::quaternion_axis_angle(c->right(), dy);
+                c->set_up(math::normalize3(math::rotate_vector3(c->up(), quaty)));
+                c->set_lookat(math::normalize3(math::rotate_vector3(c->lookat(), quaty)));
+                c->set_forward(math::normalize3(math::rotate_vector3(c->forward(), quaty)));
+                
+                
+                //c->set_forward(math::normalize3(math::sub(c->lookat(), c->position())));
+            }
+
+            inline void yaw(pinhole_camera* c, float dx)
+            {
+                math::afloat4 quatx = math::quaternion_axis_angle(c->up(), dx);
+                c->set_right(math::rotate_vector3(c->right(), quatx));
+               // c->set_up(math::rotate_vector3(c->up(), quatx));
+                c->set_lookat(math::rotate_vector3(c->lookat(), quatx));
+                c->set_forward(math::normalize3(math::rotate_vector3(c->forward(), quatx)));
+            }
+
         }
 
         inline math::float4x4 view_matrix(const pinhole_camera * camera)
