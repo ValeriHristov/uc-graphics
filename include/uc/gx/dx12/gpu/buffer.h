@@ -28,36 +28,52 @@ namespace uc
                     }
             };
 
-			class byteaddress_gpu_buffer : public gpu_buffer
+			class gpu_byteaddress_buffer : public gpu_buffer
 			{
 				using base = gpu_buffer;
 
 				public:
 
-				byteaddress_gpu_buffer() = default;
-				~byteaddress_gpu_buffer() = default;
+                gpu_byteaddress_buffer() = default;
+				~gpu_byteaddress_buffer() = default;
 
-				byteaddress_gpu_buffer(ID3D12Resource* resource, persistent_cpu_srv_descriptor_heap_handle srv, persistent_cpu_srv_descriptor_heap_handle uav) :
+                gpu_byteaddress_buffer(ID3D12Resource* resource, descriptor_handle srv, descriptor_handle uav) :
 					base(resource)
-					, m_srv(std::move(srv))
-					, m_uav(std::move(uav))
+					, m_srv(srv)
+					, m_uav(uav)
 				{
 
 				}
 
 				descriptor_handle srv() const
 				{
-					return m_srv.m_handle;
+					return m_srv;
 				}
 
 				descriptor_handle uav() const
 				{
-					return m_uav.m_handle;
+					return m_uav;
 				}
 
 				private:
-				persistent_cpu_srv_descriptor_heap_handle    m_srv;
-				persistent_cpu_srv_descriptor_heap_handle    m_uav;
+                descriptor_handle    m_srv;
+                descriptor_handle    m_uav;
+			};
+
+			class gpu_frame_byteaddress_buffer : public gpu_byteaddress_buffer
+			{
+				using base = gpu_byteaddress_buffer;
+
+    			public:
+
+                gpu_frame_byteaddress_buffer() = default;
+				~gpu_frame_byteaddress_buffer() = default;
+
+                gpu_frame_byteaddress_buffer(ID3D12Resource* resource, descriptor_handle srv, descriptor_handle uav) :
+					base(resource, srv, uav)
+				{
+
+				}
 			};
 
             inline uint64_t size( const gpu_buffer* r )

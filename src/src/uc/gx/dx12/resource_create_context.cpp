@@ -100,6 +100,16 @@ namespace uc
                     return new placement_heap_allocator<locking_policy_mutex>(d, create_render_target_heap(d, size, D3D12_HEAP_FLAG_ALLOW_ONLY_RT_DS_TEXTURES), size);
                 }
 
+                static inline auto create_default_buffer_allocator(ID3D12Device* d, uint64_t size)
+                {
+                    return new placement_heap_allocator<locking_policy_mutex>(d, create_default_heap(d, size, D3D12_HEAP_FLAG_ALLOW_ONLY_BUFFERS), size);
+                }
+
+                static inline auto create_default_frame_resource_allocator(ID3D12Device* d, uint64_t size)
+                {
+                    return new placement_heap_allocator<locking_policy_mutex>(d, create_render_target_heap(d, size, D3D12_HEAP_FLAG_ALLOW_ALL_BUFFERS_AND_TEXTURES), size);
+                }
+
                 static inline auto create_default_heap_textures_allocator(ID3D12Device* d, uint64_t size)
                 {
                     return new buddy_heap_allocator(d, create_default_heap(d, size, D3D12_HEAP_FLAG_ALLOW_ONLY_NON_RT_DS_TEXTURES), size);
@@ -161,6 +171,7 @@ namespace uc
                 gpu_sampler_descriptor_heap                       m_frame_gpu_sampler_heap[3];
                 cpu_sampler_descriptor_heap                       m_frame_cpu_sampler_heap[3];
                 std::unique_ptr< placement_heap_allocator>        m_frame_render_target_allocator;
+                std::unique_ptr< placement_heap_allocator>        m_frame_buffer_allocator;
 
                 std::unique_ptr< placement_heap_allocator >       m_upload_allocator[3];       //holds only buffers
                 std::unique_ptr< placement_heap_allocator>        m_read_back_allocator[3];
@@ -207,6 +218,7 @@ namespace uc
                 concurrency::concurrent_vector< gpu_frame_color_buffer* >               m_frame_delete_color_buffer_array[3];
                 concurrency::concurrent_vector< gpu_frame_depth_buffer* >               m_frame_delete_depth_buffer_array[3];
                 concurrency::concurrent_vector< gpu_frame_msaa_depth_buffer* >          m_frame_delete_msaa_depth_buffer_array[3];
+                concurrency::concurrent_vector< gpu_frame_byteaddress_buffer* >         m_frame_delete_byteaddress_buffer_array[3];
 
 
                 //buffers
@@ -215,7 +227,7 @@ namespace uc
 
                 concurrency::concurrent_vector< gpu_upload_buffer* >                    m_frame_delete_upload_buffer[3];
                 concurrency::concurrent_vector< gpu_buffer* >                           m_frame_delete_buffers[3];
-                concurrency::concurrent_vector< byteaddress_gpu_buffer* >               m_frame_delete_byteaddress_buffers[3];
+                concurrency::concurrent_vector< gpu_byteaddress_buffer* >               m_frame_delete_byteaddress_buffers[3];
 
 
 
@@ -245,8 +257,11 @@ namespace uc
                 void    free_upload_buffer_internal(gpu_upload_buffer* buffer);
                 void    flush_deleted_upload_buffers(uint32_t frame_index);
 
-                void    free_byteaddress_buffer_internal(byteaddress_gpu_buffer* buffer);
+                void    free_byteaddress_buffer_internal(gpu_byteaddress_buffer* buffer);
                 void    flush_deleted_byteaddress_buffers(uint32_t frame_index);
+
+                void    free_frame_byteaddress_buffer_internal(gpu_frame_byteaddress_buffer* buffer);
+                void    flush_deleted_frame_byteaddress_buffers(uint32_t frame_index);
             };
             
             gpu_resource_create_context::gpu_resource_create_context_impl::gpu_resource_create_context_impl(ID3D12Device* device) :
@@ -285,17 +300,17 @@ namespace uc
                 m_impl->m_read_back_allocator[1]    = std::unique_ptr< placement_heap_allocator >(details::create_read_back_textures_allocator(device, mb(8)));        //allocators for downloading resources
                 m_impl->m_read_back_allocator[2]    = std::unique_ptr< placement_heap_allocator >(details::create_read_back_textures_allocator(device, mb(8)));        //allocators for downloading resources
 
-                m_impl->m_view_dependent_render_target_allocator   = std::unique_ptr< placement_heap_allocator >(details::create_default_render_target_allocator(device, mb(32)));    //per view render targets and depth buffers, their lifetime depends on the view
-                m_impl->m_frame_render_target_allocator            = std::unique_ptr< placement_heap_allocator >(details::create_default_render_target_allocator(device, mb(192)));   //per frame render targets and depth buffers, their lifetime depends on the frame
-                m_impl->m_textures_allocator                       = std::unique_ptr< buddy_heap_allocator>     (details::create_default_heap_textures_allocator(device, mb(128)));   //static data, default textures go here for example, that live for the entire application
+                m_impl->m_view_dependent_render_target_allocator   = std::unique_ptr< placement_heap_allocator >(details::create_default_render_target_allocator(device, mb(32)));      //per view render targets and depth buffers, their lifetime depends on the view
+                m_impl->m_frame_render_target_allocator            = std::unique_ptr< placement_heap_allocator >(details::create_default_render_target_allocator(device, mb(192)));     //per frame render targets and depth buffers, their lifetime depends on the frame
+                m_impl->m_frame_buffer_allocator                   = std::unique_ptr< placement_heap_allocator >(details::create_default_buffer_allocator(device, mb(8)));              //per frame buffer allocator their lifetime depends on the frame
+                m_impl->m_textures_allocator                       = std::unique_ptr< buddy_heap_allocator>     (details::create_default_heap_textures_allocator(device, mb(128)));     //static data, default textures go here for example, that live for the entire application
+                m_impl->m_geometry_heap                            = std::unique_ptr< coalesceable_heap_allocator>(details::create_default_heap_geometry_allocator(device, mb(64)));    //static data, geometry and index buffers go here
+                m_impl->m_null_resource                            = std::unique_ptr< gpu_virtual_resource>(details::create_null_resource(device));
 
-                m_impl->m_geometry_heap             = std::unique_ptr< coalesceable_heap_allocator>(details::create_default_heap_geometry_allocator(device, mb(128)));  //static data, geometry and index buffers go here
-                m_impl->m_null_resource             = std::unique_ptr< gpu_virtual_resource>(details::create_null_resource(device));
-
-                m_impl->m_null_srv                  = m_impl->m_null_resource_srv_heap.allocate(1);
-                m_impl->m_null_uav                  = m_impl->m_null_resource_srv_heap.allocate(1);
-                m_impl->m_null_cbv                  = m_impl->m_null_resource_srv_heap.allocate(1);
-                m_impl->m_null_sampler              = m_impl->m_null_sampler_heap.allocate();
+                m_impl->m_null_srv                                 = m_impl->m_null_resource_srv_heap.allocate(1);
+                m_impl->m_null_uav                                 = m_impl->m_null_resource_srv_heap.allocate(1);
+                m_impl->m_null_cbv                                 = m_impl->m_null_resource_srv_heap.allocate(1);
+                m_impl->m_null_sampler                             = m_impl->m_null_sampler_heap.allocate();
 
                 D3D12_CPU_DESCRIPTOR_HANDLE h0 = m_impl->m_null_srv;
                 D3D12_CPU_DESCRIPTOR_HANDLE h1 = m_impl->m_null_uav;
@@ -650,6 +665,24 @@ namespace uc
                 textures.clear();
             }
 
+            void gpu_resource_create_context::gpu_resource_create_context_impl::free_frame_byteaddress_buffer_internal(gpu_frame_byteaddress_buffer* buffer)
+            {
+                delete buffer;
+            }
+
+            void gpu_resource_create_context::gpu_resource_create_context_impl::flush_deleted_frame_byteaddress_buffers(uint32_t frame_index)
+            {
+                std::lock_guard< std::mutex  > lock(m_delete_textures_mutex);
+                auto& textures = m_frame_delete_byteaddress_buffer_array[frame_index];
+
+                for (auto&& t : textures)
+                {
+                    free_frame_byteaddress_buffer_internal(t);
+                }
+
+                textures.clear();
+            }
+
             void gpu_resource_create_context::gpu_resource_create_context_impl::free_frame_depth_buffer_internal(gpu_frame_depth_buffer* texture)
             {
                 delete texture;
@@ -686,8 +719,6 @@ namespace uc
                 textures.clear();
             }
 
-
-
             gpu_upload_buffer* gpu_resource_create_context::create_upload_buffer(uint64_t size)
             {
                 return new gpu_upload_buffer(create_upload_buffer_resource(size).Get());
@@ -707,7 +738,7 @@ namespace uc
 
             namespace details
             {
-                template <typename t, typename allocator, typename srv_heap_t> t* create_color_buffer(ID3D12Device* d, uint32_t width, uint32_t height, DXGI_FORMAT format, D3D12_RESOURCE_STATES initial_state, allocator* allocator, gpu_rtv_descriptor_heap* rtv_heap, srv_heap_t* srv_heap)
+                template <typename t, typename allocator, typename srv_heap_t> t* create_color_buffer(ID3D12Device* d, uint32_t width, uint32_t height, DXGI_FORMAT format, D3D12_RESOURCE_STATES initial_state, allocator* _allocator, gpu_rtv_descriptor_heap* rtv_heap, srv_heap_t* srv_heap)
                 {
                     D3D12_CLEAR_VALUE v = {};
                     v.Format = format;
@@ -721,7 +752,7 @@ namespace uc
                     rtv.ViewDimension = D3D12_RTV_DIMENSION_TEXTURE2D;
                     rtv.Texture2D.MipSlice = 0;
 
-                    resource = allocator->create_placed_resource(&desc, initial_state, &v);
+                    resource = _allocator->create_placed_resource(&desc, initial_state, &v);
                     resource->SetName(L"Color Buffer");
 
                     auto handle = rtv_heap->allocate();
@@ -750,7 +781,7 @@ namespace uc
 
                     return new t(resource.Get(), handle, srv, uav);
                 }
-                template <typename t, typename allocator, typename srv_heap_t> t* create_depth_buffer(ID3D12Device* d, uint32_t width, uint32_t height, DXGI_FORMAT format, float clear_value, uint8_t stencil, allocator* allocator, gpu_dsv_descriptor_heap* dsv_heap, srv_heap_t* srv_heap)
+                template <typename t, typename allocator, typename srv_heap_t> t* create_depth_buffer(ID3D12Device* d, uint32_t width, uint32_t height, DXGI_FORMAT format, float clear_value, uint8_t stencil, allocator* _allocator, gpu_dsv_descriptor_heap* dsv_heap, srv_heap_t* srv_heap)
                 {
                     D3D12_CLEAR_VALUE v = {};
                     v.Format = format;
@@ -761,7 +792,7 @@ namespace uc
 
                     Microsoft::WRL::ComPtr<ID3D12Resource>  resource;
 
-                    resource = allocator->create_placed_resource(&desc, D3D12_RESOURCE_STATE_DEPTH_WRITE, &v);
+                    resource = _allocator->create_placed_resource(&desc, D3D12_RESOURCE_STATE_DEPTH_WRITE, &v);
                     resource->SetName(L"Depth Buffer");
 
                     // Create the shader resource view
@@ -796,7 +827,8 @@ namespace uc
 
                     return new t(resource.Get(), srv, dsv );
                 }
-                template <typename t, typename allocator, typename srv_heap_t> t* create_msaa_depth_buffer(ID3D12Device* d, uint32_t width, uint32_t height, DXGI_FORMAT format, float clear_value, uint8_t stencil, allocator* allocator, gpu_dsv_descriptor_heap* dsv_heap, srv_heap_t* srv_heap)
+
+                template <typename t, typename allocator, typename srv_heap_t> t* create_msaa_depth_buffer(ID3D12Device* d, uint32_t width, uint32_t height, DXGI_FORMAT format, float clear_value, uint8_t stencil, allocator* _allocator, gpu_dsv_descriptor_heap* dsv_heap, srv_heap_t* srv_heap)
                 {
                     D3D12_CLEAR_VALUE v = {};
                     v.Format = format;
@@ -807,7 +839,7 @@ namespace uc
 
                     Microsoft::WRL::ComPtr<ID3D12Resource>  resource;
 
-                    resource = allocator->create_placed_resource(&desc, D3D12_RESOURCE_STATE_DEPTH_WRITE, &v);
+                    resource = _allocator->create_placed_resource(&desc, D3D12_RESOURCE_STATE_DEPTH_WRITE, &v);
                     resource->SetName(L"MSAA Depth Buffer");
 
                     // Create the shader resource view
@@ -836,6 +868,45 @@ namespace uc
 
                     descriptor_handle dsv[] = { dsvReadWrite, dsvReadDepth };
                     return new t(resource.Get(), srv, dsv);
+                }
+
+                template <typename t, typename allocator, typename srv_heap_t> t* create_byteaddress_buffer(ID3D12Device* d, uint32_t size, D3D12_RESOURCE_STATES initial_state, allocator* _allocator, srv_heap_t* srv_heap)
+                {
+                    auto desc = describe_buffer(size, 1);
+
+                    Microsoft::WRL::ComPtr<ID3D12Resource>  resource;
+
+                    D3D12_SHADER_RESOURCE_VIEW_DESC  descSRV = {};
+                    D3D12_UNORDERED_ACCESS_VIEW_DESC descUAV = {};
+
+                    descSRV.Format = DXGI_FORMAT_R32_TYPELESS;
+                    descSRV.ViewDimension = D3D12_SRV_DIMENSION_BUFFER;
+                    descSRV.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+                    descSRV.Buffer.NumElements = size / 4;
+                    descSRV.Buffer.Flags = D3D12_BUFFER_SRV_FLAG_RAW;
+
+                    descUAV.Format = DXGI_FORMAT_R32_TYPELESS;
+                    descUAV.ViewDimension = D3D12_UAV_DIMENSION_BUFFER;
+                    descUAV.Buffer.NumElements = size / 4;
+                    descUAV.Buffer.Flags = D3D12_BUFFER_UAV_FLAG_RAW;
+
+                    descriptor_handle uav;
+                    descriptor_handle srv;
+
+                    {
+                        desc.Flags |= D3D12_RESOURCE_FLAG_ALLOW_UNORDERED_ACCESS;
+
+                        resource = _allocator->create_placed_resource(&desc, initial_state);
+                        resource->SetName(L"ByteAddressBuffer");
+
+                        uav = srv_heap->allocate();
+                        srv = srv_heap->allocate();
+                    }
+
+                    d->CreateUnorderedAccessView(resource.Get(), nullptr, &descUAV, uav);
+                    d->CreateShaderResourceView(resource.Get(), &descSRV, srv);
+
+                    return new t(resource.Get(), srv, uav);
                 }
             }
             
@@ -925,7 +996,7 @@ namespace uc
                 return new gpu_buffer(resource.Get());
             }
 
-            byteaddress_gpu_buffer* gpu_resource_create_context::create_byteaddress_buffer(uint32_t size, D3D12_RESOURCE_STATES initial_state)
+            gpu_byteaddress_buffer* gpu_resource_create_context::create_byteaddress_buffer(uint32_t size, D3D12_RESOURCE_STATES initial_state)
             {
                 auto desc = describe_buffer(size, 1);
 
@@ -962,7 +1033,7 @@ namespace uc
                 m_impl->m_device->CreateUnorderedAccessView(resource.Get(), nullptr, &descUAV, uav.handle());
                 m_impl->m_device->CreateShaderResourceView(resource.Get(), &descSRV, srv.handle());
 
-                return new byteaddress_gpu_buffer(resource.Get(), std::move(srv), std::move(uav));
+                return new gpu_byteaddress_buffer(resource.Get(), srv.handle(), uav.handle());
             }
 
             void gpu_resource_create_context::free_buffer(gpu_buffer* buffer)
@@ -972,6 +1043,18 @@ namespace uc
                 buffers.push_back(buffer);
             }
 
+            gpu_frame_byteaddress_buffer* gpu_resource_create_context::create_frame_byteaddress_buffer(uint32_t size, D3D12_RESOURCE_STATES initial_state)
+            {
+                return details::create_byteaddress_buffer<gpu_frame_byteaddress_buffer>(m_impl->m_device.Get(), size, initial_state, m_impl->m_frame_buffer_allocator.get(), frame_gpu_srv_heap() );
+            }
+
+            void gpu_resource_create_context::free_frame_byteaddress_buffer(gpu_frame_byteaddress_buffer* b)
+            {
+                std::lock_guard< std::mutex  > lock(m_impl->m_delete_textures_mutex);
+                auto& textures = m_impl->m_frame_delete_byteaddress_buffer_array[m_impl->m_frame_index];
+                textures.push_back(b);
+            }
+
             void gpu_resource_create_context::free_upload_buffer(gpu_upload_buffer* buffer)
             {
                 std::lock_guard< std::mutex  > lock(m_impl->m_delete_buffers_mutex);
@@ -979,7 +1062,7 @@ namespace uc
                 buffers.push_back(buffer);
             }
 
-            void gpu_resource_create_context::free_byteaddress_buffer(byteaddress_gpu_buffer* buffer)
+            void gpu_resource_create_context::free_byteaddress_buffer(gpu_byteaddress_buffer* buffer)
             {
                 std::lock_guard< std::mutex  > lock(m_impl->m_delete_buffers_mutex);
                 auto& buffers = m_impl->m_frame_delete_byteaddress_buffers[m_impl->m_frame_index];
@@ -1006,7 +1089,7 @@ namespace uc
                 buffers.clear();
             }
 
-            void gpu_resource_create_context::gpu_resource_create_context_impl::free_byteaddress_buffer_internal(byteaddress_gpu_buffer* buffer)
+            void gpu_resource_create_context::gpu_resource_create_context_impl::free_byteaddress_buffer_internal(gpu_byteaddress_buffer* buffer)
             {
                 auto allocator = geometry_allocator();
                 allocator->free_placed_resource(buffer->resource());
@@ -1056,6 +1139,7 @@ namespace uc
                 m_impl->flush_deleted_frame_color_buffer(m_impl->m_frame_index);
                 m_impl->flush_deleted_frame_depth_buffer(m_impl->m_frame_index);
                 m_impl->flush_deleted_frame_msaa_depth_buffer(m_impl->m_frame_index);
+                m_impl->flush_deleted_frame_byteaddress_buffers(m_impl->m_frame_index);
 
                 m_impl->flush_deleted_buffers(m_impl->m_frame_index);
                 m_impl->flush_deleted_upload_buffers(m_impl->m_frame_index);
@@ -1067,6 +1151,7 @@ namespace uc
                 frame_rtv_heap()->reset();
 
                 m_impl->m_frame_render_target_allocator->reset();
+                m_impl->m_frame_buffer_allocator->reset();
                 m_impl->upload_allocator()->reset();
                 m_impl->read_back_allocator()->reset();
             }

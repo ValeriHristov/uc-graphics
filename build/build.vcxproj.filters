@@ -307,6 +307,9 @@
     <ClInclude Include="..\include\uc\gx\dx12\gpu\managed_buffer.h">
       <Filter>include\uc\gx\dx12\gpu</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\uc\gx\dx12\gpu\managed_frame_buffer.h">
+      <Filter>include\uc\gx\dx12\gpu</Filter>
+    </ClInclude>
     <ClInclude Include="..\include\uc\gx\dx12\gpu\managed_frame_color_buffer.h">
       <Filter>include\uc\gx\dx12\gpu</Filter>
     </ClInclude>

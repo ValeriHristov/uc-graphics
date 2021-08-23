@@ -18,6 +18,7 @@
         <dependency id="uc-imaging" version="1.0.12"/>
         <dependency id="uc-math" version="1.0.4"/>
         <dependency id="uc-serialization-engine" version="1.0.2"/>
+	<dependency id="WinPixEventRuntime" version="1.0.200127001"/>
     </dependencies>
   </metadata>
   <files>
